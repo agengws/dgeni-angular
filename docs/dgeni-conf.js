@@ -1,7 +1,20 @@
 // Canonical path provides a consistent path (i.e. always forward slashes) across different OSes
 var path = require('canonical-path');
 var Package = require('dgeni').Package;
+var computeIdsProcessor = require('./path/to/your/computeIdsProcessor'); // Update this path accordingly
 
+// Define your ID templates
+const idTemplates = [
+  {
+    docTypes: ['api', 'service'],
+    idTemplate: 'api-${name}',
+    getAliases: (doc) => [doc.name, doc.title]
+  },
+  {
+    docTypes: ['component'],
+    getId: (doc) => doc.path.replace(/\/+/g, '-'),
+  }
+];
 
 module.exports = new Package('dgeni-example', [
   require('dgeni-packages/angularjs'),
@@ -9,9 +22,7 @@ module.exports = new Package('dgeni-example', [
   require('dgeni-packages/nunjucks')
 ])
 
-
 .config(function(log, readFilesProcessor, writeFilesProcessor) {
-
   log.level = 'info';
 
   readFilesProcessor.basePath = path.resolve(__dirname, '..');
@@ -20,12 +31,9 @@ module.exports = new Package('dgeni-example', [
   ];
 
   writeFilesProcessor.outputFolder  = 'build';
-
 })
 
-
 .config(function(templateFinder, templateEngine) {
-
   // Nunjucks and Angular conflict in their template bindings so change the Nunjucks
   templateEngine.config.tags = {
     variableStart: '{$',
@@ -44,11 +52,16 @@ module.exports = new Package('dgeni-example', [
   ];
 })
 
-
 .config(function(getLinkInfo) {
   getLinkInfo.relativeLinks = true;
+})
+
+// Add the computeIdsProcessor to the package
+.config(function(processor) {
+  processor.processors.push(computeIdsProcessor);
+})
+
+// Pass the ID templates to the computeIdsProcessor
+.config(function(computeIdsProcessor) {
+  computeIdsProcessor.idTemplates = idTemplates;
 });
-
-
-
-
