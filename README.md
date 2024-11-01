@@ -2,7 +2,7 @@
 
 This project demonstrates how you can use the angularjs dgeni package
 to generate documentation for almost any AngularJS application
-
+s
 ### Build
 
 You'll need node.js. Then do:
