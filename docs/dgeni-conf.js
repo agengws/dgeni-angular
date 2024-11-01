@@ -55,11 +55,6 @@ module.exports = new Package('dgeni-example', [
   getLinkInfo.relativeLinks = true;
 })
 
-// Add the computeIdsProcessor to the package
-.config(function(processor) {
-  processor.processors.push(computeIdsProcessor);
-})
-
 // Pass the ID templates to the computeIdsProcessor
 .config(function(computeIdsProcessor) {
   computeIdsProcessor.idTemplates = idTemplates;
