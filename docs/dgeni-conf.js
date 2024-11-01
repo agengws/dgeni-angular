@@ -1,7 +1,6 @@
 // Canonical path provides a consistent path (i.e. always forward slashes) across different OSes
 var path = require('canonical-path');
 var Package = require('dgeni').Package;
-var computeIdsProcessor = require('./path/to/your/computeIdsProcessor'); // Update this path accordingly
 
 // Define your ID templates
 const idTemplates = [
