@@ -17,19 +17,26 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14' # Specify your Node.js version
+          node-version: '14'
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
 
       - name: Install dependencies
         run: npm install
 
       - name: Build documentation
-        run: |
-          npm run gulp assets dgeni # Adjust this command based on your setup
+        run: npx gulp assets dgeni # Updated to run Gulp directly
 
       - name: Output generated files
         run: |
           mkdir -p output
-          cp -R build/* output/ # Copy the generated files to an output folder
+          cp -R build/* output/
 
       - name: Upload documentation artifacts
         uses: actions/upload-artifact@v3
