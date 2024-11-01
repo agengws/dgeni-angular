@@ -3,7 +3,7 @@ name: Generate Dgeni Documentation
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
 
 jobs:
